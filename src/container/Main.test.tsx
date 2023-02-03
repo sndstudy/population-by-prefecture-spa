@@ -1,8 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { PrefecturesResponse } from './api/fetch-data';
-import App from './App';
+import Main from './Main';
+import { PrefecturesResponse } from '../api/fetch-data';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const server = setupServer(
   rest.get(
@@ -31,8 +32,20 @@ describe('Mainのテスト', () => {
     server.close();
   });
 
+  const queryClient = new QueryClient();
+
   it('初期描画', async () => {
-    const { asFragment } = render(<App />);
+    const { asFragment } = render(
+      <QueryClientProvider client={queryClient}>
+        <Main />
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('データ取得中')).toBeInTheDocument();
+    });
+
+    expect(asFragment()).toMatchSnapshot();
 
     await waitFor(() => {
       const checkBoxList = screen.getAllByRole('checkbox');
@@ -43,6 +56,7 @@ describe('Mainのテスト', () => {
       });
     });
 
+    expect(screen.queryByText('データ取得中')).toBeNull();
     expect(asFragment()).toMatchSnapshot();
   });
 });
