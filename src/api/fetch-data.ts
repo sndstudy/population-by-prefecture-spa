@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const RESAS_API_ENDPOINT = 'https://opendata.resas-portal.go.jp/';
-const API_KEY = process.env['REACT_APP_RESAS_API_KEY'];
+const API_KEY = process.env['REACT_APP_RESAS_API_KEY'] || '';
 
 const instance = axios.create({
   baseURL: RESAS_API_ENDPOINT,
@@ -9,12 +9,12 @@ const instance = axios.create({
   headers: { 'X-API-KEY': API_KEY },
 });
 
-type PrefecturesResponse = {
+export type PrefecturesResponse = {
   message: string;
   result: Prefectures[];
 };
 
-type Prefectures = {
+export type Prefectures = {
   prefCode: string;
   prefName: string;
 };

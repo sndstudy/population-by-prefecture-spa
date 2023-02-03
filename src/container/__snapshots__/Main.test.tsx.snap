@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mainのテスト 初期描画 1`] = `
+<DocumentFragment>
+  <div
+    class="title"
+  >
+    都道府県別 総人口
+  </div>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="prefectures_area"
+    >
+      <div
+        class="section_title"
+      >
+        都道府県
+      </div>
+      データ取得中
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Mainのテスト 初期描画 2`] = `
+<DocumentFragment>
+  <div
+    class="title"
+  >
+    都道府県別 総人口
+  </div>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="prefectures_area"
+    >
+      <div
+        class="section_title"
+      >
+        都道府県
+      </div>
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            value="1"
+          />
+          北海道
+        </label>
+      </div>
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            value="2"
+          />
+          青森県
+        </label>
+      </div>
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            value="3"
+          />
+          岩手県
+        </label>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

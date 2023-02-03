@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CheckBoxのテスト チェックが入っていない場合 1`] = `
+<DocumentFragment>
+  <div>
+    <label>
+      <input
+        type="checkbox"
+        value="1"
+      />
+      北海道
+    </label>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`CheckBoxのテスト チェックが入っている場合 1`] = `
+<DocumentFragment>
+  <div>
+    <label>
+      <input
+        checked=""
+        type="checkbox"
+        value="1"
+      />
+      北海道
+    </label>
+  </div>
+</DocumentFragment>
+`;

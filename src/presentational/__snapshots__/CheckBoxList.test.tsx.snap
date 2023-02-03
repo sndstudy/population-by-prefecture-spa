@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CheckBoxListのテスト データが0件の場合 1`] = `<DocumentFragment />`;
+
+exports[`CheckBoxListのテスト データがある場合。(データ全てが選択されていない状態) 1`] = `
+<DocumentFragment>
+  <div>
+    <label>
+      <input
+        type="checkbox"
+        value="1"
+      />
+      北海道
+    </label>
+  </div>
+  <div>
+    <label>
+      <input
+        type="checkbox"
+        value="2"
+      />
+      青森県
+    </label>
+  </div>
+  <div>
+    <label>
+      <input
+        type="checkbox"
+        value="3"
+      />
+      岩手県
+    </label>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`CheckBoxListのテスト データがある場合。(データ全てが選択されている状態) 1`] = `
+<DocumentFragment>
+  <div>
+    <label>
+      <input
+        checked=""
+        type="checkbox"
+        value="1"
+      />
+      北海道
+    </label>
+  </div>
+  <div>
+    <label>
+      <input
+        checked=""
+        type="checkbox"
+        value="2"
+      />
+      青森県
+    </label>
+  </div>
+  <div>
+    <label>
+      <input
+        checked=""
+        type="checkbox"
+        value="3"
+      />
+      岩手県
+    </label>
+  </div>
+</DocumentFragment>
+`;
