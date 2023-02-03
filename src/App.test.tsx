@@ -32,9 +32,7 @@ describe('Mainのテスト', () => {
   });
 
   it('初期描画', async () => {
-    const { asFragment } = render(
-        <App />
-    );
+    const { asFragment } = render(<App />);
 
     await waitFor(() => {
       const checkBoxList = screen.getAllByRole('checkbox');
