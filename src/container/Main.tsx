@@ -85,15 +85,22 @@ const Main = () => {
         <div className={styles.prefectures_area}>
           <div className={styles.section_title}>都道府県選択</div>
           {fetchPrefecturesResult.isLoading && <>データ取得中</>}
+          {fetchPrefecturesResult.isError && (
+            <>都道府県データ取得に失敗しました</>
+          )}
           {fetchPrefecturesResult.data && (
             <CheckBoxList
               data={fetchPrefecturesResult.data.result}
               selectedPrefectures={selectedPrefectures}
               onChange={changeHandler}
+              isDisabled={fetchPopulationDataResult.isLoading}
             />
           )}
         </div>
         <div className={styles.graph_area}>
+          {fetchPopulationDataResult.isError && (
+            <>総人口データ取得に失敗しました</>
+          )}
           <HighchartsReact
             containerProps={{ style: { height: '100%' } }}
             highcharts={getHighchartsInstance()}

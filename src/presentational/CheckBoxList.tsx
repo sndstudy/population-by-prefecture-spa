@@ -5,6 +5,7 @@ import CheckBox from './CheckBox';
 type Props = {
   data: Prefectures[];
   selectedPrefectures: string[];
+  isDisabled: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
@@ -21,6 +22,7 @@ const CheckBoxList = (props: Props) => {
               (selectedPrefecture) =>
                 selectedPrefecture === String(prefecture.prefCode),
             )}
+            isDisabled={props.isDisabled}
             onChange={props.onChange}
           />
         );

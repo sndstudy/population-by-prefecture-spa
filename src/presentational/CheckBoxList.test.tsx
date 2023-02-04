@@ -10,6 +10,7 @@ describe('CheckBoxListのテスト', () => {
       <CheckBoxList
         data={data}
         selectedPrefectures={selectedPrefectures}
+        isDisabled={false}
         onChange={jest.fn}
       />,
     );
@@ -29,6 +30,7 @@ describe('CheckBoxListのテスト', () => {
       <CheckBoxList
         data={data}
         selectedPrefectures={selectedPrefectures}
+        isDisabled={false}
         onChange={jest.fn}
       />,
     );
@@ -51,6 +53,7 @@ describe('CheckBoxListのテスト', () => {
       <CheckBoxList
         data={data}
         selectedPrefectures={selectedPrefectures}
+        isDisabled={false}
         onChange={jest.fn}
       />,
     );

@@ -4,6 +4,7 @@ type Props = {
   value: string;
   checked: boolean;
   label: string;
+  isDisabled: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
@@ -16,6 +17,7 @@ const CheckBox = (props: Props) => {
           value={props.value}
           checked={props.checked}
           onChange={props.onChange}
+          disabled={props.isDisabled}
         />
         {props.label}
       </label>
