@@ -1,14 +1,6 @@
 .prefectures_area {
-  background-color: gainsboro;
-}
-
-.wrapper {
-    display: grid;
-    grid-template-columns: 10vw 90vw;
-}
-
-.prefectures_area {
-    height: 95vh;
+    background-color: gainsboro;
+    height: calc(100vh - (1.8rem * 1.5));
     overflow: scroll;
 }
 
@@ -17,13 +9,55 @@
 }
 
 .graph_area {
-    height: 95vh;
+    height: calc(100vh - (1.8rem * 1.5));
     overflow: scroll;
 }
 
+.wrapper {
+    display: grid;
+}
+
 .title {
-    height: 5vh;
     background-color: rgb(70, 70, 91);
     color: white;
+    height: calc(1.8rem * 1.5);
     font-size: 1.8rem;
+}
+
+@media screen and (max-width:480px) {
+    .prefectures_area {
+        height: 40vh;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        overflow: scroll;
+    }
+
+    .section_title {
+        grid-column-start: 1;
+        grid-column-end: 5;
+        grid-row-start: 1;
+        grid-row-end: 2;
+    }
+
+    .graph_area {
+        height: 40vh;
+        overflow: scroll;
+    }
+
+    .title {
+        height: calc(1.6rem * 1.5);
+        font-size: 1.6rem;
+    }
+}
+
+@media screen and (min-width:480px) and (max-width:1024px) {
+    .wrapper {
+        grid-template-columns: 17vw 83vw;
+    }
+}
+
+@media screen and (min-width:1024px) {
+    .wrapper {
+        grid-template-columns: 10vw 90vw;
+    }
 }
