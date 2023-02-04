@@ -21,11 +21,15 @@ const Main = () => {
   >([]);
   const [selectedPrefectures, setSelectedPrefectures] = useState<string[]>([]);
 
-  const fetchPrefecturesResult = useQuery('fetchPrefectures', fetchPrefectures);
+  const fetchPrefecturesResult = useQuery(
+    'fetchPrefectures',
+    fetchPrefectures,
+    { retry: false },
+  );
   const fetchPopulationDataResult = useQuery(
     ['fetchPopulationData', fetchPopulationParam],
     fetchPopulationData,
-    { enabled: !!fetchPopulationParam },
+    { enabled: !!fetchPopulationParam, retry: false },
   );
 
   const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {

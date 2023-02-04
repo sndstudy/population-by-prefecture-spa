@@ -3,8 +3,17 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import Main from './Main';
 import { PrefecturesResponse } from '../api/fetch-data';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider, setLogger } from 'react-query';
 import userEvent from '@testing-library/user-event';
+
+// テストのためコンソールログを抑制
+setLogger({
+  log: console.log,
+  warn: console.warn,
+  error: () => {
+    return;
+  },
+});
 
 const populationData = [
   {
@@ -93,33 +102,33 @@ const populationData = [
   },
 ];
 
-const server = setupServer(
-  rest.get(
-    'https://opendata.resas-portal.go.jp/api/v1/prefectures',
-    (req, res, ctx) => {
-      return res(
-        ctx.json<PrefecturesResponse>({
-          message: 'テストメッセージ',
-          result: [
-            { prefCode: '1', prefName: '北海道' },
-            { prefCode: '2', prefName: '青森県' },
-            { prefCode: '3', prefName: '岩手県' },
-          ],
-        }),
-      );
-    },
-  ),
-  rest.get(
-    'https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear',
-    (req, res, ctx) => {
-      const prefCode = req.url.searchParams.get('prefCode');
-      const resData = populationData.find((v) => v.prefCode === prefCode);
-      return res(ctx.json(resData?.data));
-    },
-  ),
-);
-
 describe('Mainのテスト', () => {
+  const server = setupServer(
+    rest.get(
+      'https://opendata.resas-portal.go.jp/api/v1/prefectures',
+      (req, res, ctx) => {
+        return res(
+          ctx.json<PrefecturesResponse>({
+            message: 'テストメッセージ',
+            result: [
+              { prefCode: '1', prefName: '北海道' },
+              { prefCode: '2', prefName: '青森県' },
+              { prefCode: '3', prefName: '岩手県' },
+            ],
+          }),
+        );
+      },
+    ),
+    rest.get(
+      'https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear',
+      (req, res, ctx) => {
+        const prefCode = req.url.searchParams.get('prefCode');
+        const resData = populationData.find((v) => v.prefCode === prefCode);
+        return res(ctx.json(resData?.data));
+      },
+    ),
+  );
+
   beforeAll(() => {
     server.listen();
   });
@@ -217,6 +226,111 @@ describe('Mainのテスト', () => {
     });
 
     // グラフが描画されていないことを確認
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
+
+describe('Mainのテスト(エラーパターン)', () => {
+  const server = setupServer(
+    rest.get(
+      'https://opendata.resas-portal.go.jp/api/v1/prefectures',
+      (req, res, ctx) => {
+        return res(
+          ctx.json<{ statusCode: string }>({
+            statusCode: '403',
+          }),
+        );
+      },
+    ),
+    rest.get(
+      'https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear',
+      (req, res, ctx) => {
+        return res(
+          ctx.json<{ statusCode: string }>({
+            statusCode: '403',
+          }),
+        );
+      },
+    ),
+  );
+
+  beforeAll(() => {
+    server.listen();
+  });
+  afterAll(() => {
+    server.close();
+  });
+
+  const queryClient = new QueryClient();
+
+  it('都道府県一覧APIエラー', async () => {
+    const { asFragment } = render(
+      <QueryClientProvider client={queryClient}>
+        <Main />
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('データ取得中')).toBeInTheDocument();
+    });
+
+    expect(asFragment()).toMatchSnapshot();
+
+    await waitFor(() => {
+      expect(screen.queryByRole('checkbox')).toBeNull();
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('都道府県データ取得に失敗しました'),
+      ).toBeInTheDocument();
+    });
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('人口構成APIエラー', async () => {
+    server.use(
+      rest.get(
+        'https://opendata.resas-portal.go.jp/api/v1/prefectures',
+        (req, res, ctx) => {
+          return res(
+            ctx.json<PrefecturesResponse>({
+              message: 'テストメッセージ',
+              result: [
+                { prefCode: '1', prefName: '北海道' },
+                { prefCode: '2', prefName: '青森県' },
+                { prefCode: '3', prefName: '岩手県' },
+              ],
+            }),
+          );
+        },
+      ),
+    );
+
+    const { asFragment } = render(
+      <QueryClientProvider client={queryClient}>
+        <Main />
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      const checkBoxList = screen.getAllByRole('checkbox');
+      expect(checkBoxList.length).toBe(3);
+    });
+
+    expect(screen.queryByText('データ取得中')).toBeNull();
+    expect(asFragment()).toMatchSnapshot();
+
+    const checkbox = screen.getByLabelText('北海道');
+
+    userEvent.click(checkbox);
+    expect(checkbox).toBeChecked();
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('総人口データ取得に失敗しました'),
+      ).toBeInTheDocument();
+    });
     expect(asFragment()).toMatchSnapshot();
   });
 });
