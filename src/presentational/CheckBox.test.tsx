@@ -1,13 +1,17 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ChangeEvent, useState } from 'react';
-// import { rest } from 'msw';
-// import { setupServer } from 'msw/node';
 import CheckBox from './CheckBox';
 
 describe('CheckBoxのテスト', () => {
   it('チェックが入っている場合', () => {
     const { asFragment } = render(
-      <CheckBox value="1" checked={true} label="北海道" onChange={jest.fn} />,
+      <CheckBox
+        value="1"
+        checked={true}
+        label="北海道"
+        isDisabled={false}
+        onChange={jest.fn}
+      />,
     );
     const checkbox = screen.getByLabelText('北海道');
     expect(checkbox).toBeChecked();
@@ -16,7 +20,13 @@ describe('CheckBoxのテスト', () => {
 
   it('チェックが入っていない場合', () => {
     const { asFragment } = render(
-      <CheckBox value="1" checked={false} label="北海道" onChange={jest.fn} />,
+      <CheckBox
+        value="1"
+        checked={false}
+        label="北海道"
+        isDisabled={false}
+        onChange={jest.fn}
+      />,
     );
     const checkbox = screen.getByLabelText('北海道');
     expect(checkbox).not.toBeChecked();
@@ -34,6 +44,7 @@ describe('CheckBoxのテスト', () => {
           value="1"
           checked={isChecked}
           label="北海道"
+          isDisabled={false}
           onChange={changeHandler}
         />
       );
