@@ -1,4 +1,6 @@
-export const highchartsOptions = {
+import Highcharts from 'highcharts';
+
+export const highchartsOptions: Highcharts.Options = {
   accessibility: {
     enabled: false,
   },
@@ -33,4 +35,11 @@ export const highchartsOptions = {
     align: 'right',
     verticalAlign: 'middle',
   },
+};
+
+export const getHighchartsInstance = () => {
+  // テスト実行時のみHighchartsで設定されるIDを固定化する
+  /* eslint react-hooks/rules-of-hooks:off */
+  Highcharts.useSerialIds(process.env.NODE_ENV === 'test');
+  return Highcharts;
 };

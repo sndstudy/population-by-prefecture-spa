@@ -1,20 +1,23 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
-import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import {
   fetchPopulationData,
   fetchPrefectures,
   Population,
+  Prefectures,
 } from '../api/fetch-data';
 import CheckBoxList from '../presentational/CheckBoxList';
-import { highchartsOptions } from '../option/HighchartsOptions';
+import {
+  highchartsOptions,
+  getHighchartsInstance,
+} from '../option/HighchartsOptions';
 import styles from '../styles/Main.module.scss';
 
 const Main = () => {
   const [fetchPopulationParam, setFetchPopulationParam] = useState<string>('');
   const [populationDataList, setPopulationDataList] = useState<
-    ({ prefCode: string; prefName: string } & Population)[]
+    (Prefectures & Population)[]
   >([]);
   const [selectedPrefectures, setSelectedPrefectures] = useState<string[]>([]);
 
@@ -91,7 +94,7 @@ const Main = () => {
         <div className={styles.graph_area}>
           <HighchartsReact
             containerProps={{ style: { height: '100%' } }}
-            highcharts={Highcharts}
+            highcharts={getHighchartsInstance()}
             options={options}
           />
         </div>

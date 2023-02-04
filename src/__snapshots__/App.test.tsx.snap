@@ -56,7 +56,7 @@ exports[`Mainのテスト 初期描画 1`] = `
         <div
           class="highcharts-container "
           dir="ltr"
-          id="highcharts-mfmp91h-0"
+          id="highcharts-0"
           style="position: relative; overflow: hidden; width: 600px; height: 400px; text-align: left; line-height: normal; z-index: 0; user-select: none; outline: none;"
         >
           <svg
@@ -75,7 +75,7 @@ exports[`Mainのテスト 初期描画 1`] = `
             </desc>
             <defs>
               <clippath
-                id="highcharts-mfmp91h-1-"
+                id="highcharts-1-"
               >
                 <rect
                   fill="none"
