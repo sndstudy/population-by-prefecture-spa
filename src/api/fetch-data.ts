@@ -44,7 +44,7 @@ export const fetchPrefectures = async () => {
   // エラーの場合、ステータスコードがレスポンスボディに設定されているため「statusCode」の有無でエラーを判定する
   // https://opendata.resas-portal.go.jp/docs/api/v1/detail/index.html
   if ('statusCode' in data) {
-    throw new Error();
+    return Promise.reject();
   }
 
   return data;
@@ -68,7 +68,7 @@ export const fetchPopulationData = async ({
   // エラーの場合、ステータスコードがレスポンスボディに設定されているため「statusCode」の有無でエラーを判定する
   // https://opendata.resas-portal.go.jp/docs/api/v1/detail/index.html
   if ('statusCode' in data) {
-    throw new Error();
+    return Promise.reject();
   }
 
   return data;
