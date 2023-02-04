@@ -19,9 +19,44 @@ export type Prefectures = {
   prefName: string;
 };
 
+export type PopulationResponse = {
+  message: string;
+  result: Population;
+};
+
+export type Population = {
+  boundaryYear: number;
+  data: {
+    label: string;
+    data: {
+      year: number;
+      value: number;
+      rate?: number;
+    }[];
+  }[];
+};
+
 export const fetchPrefectures = async () => {
   const { data } = await instance.get<PrefecturesResponse>(
     'api/v1/prefectures',
+  );
+  return data;
+};
+
+export const fetchPopulationData = async ({
+  queryKey,
+}: {
+  queryKey: string[];
+}) => {
+  const [, prefCode] = queryKey;
+
+  const { data } = await instance.get<PopulationResponse>(
+    'api/v1/population/composition/perYear',
+    {
+      params: {
+        prefCode,
+      },
+    },
   );
   return data;
 };

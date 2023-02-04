@@ -1,25 +1,29 @@
+.prefectures_area {
+  background-color: gainsboro;
+}
+
 .wrapper {
-  display: grid;
-  grid-template-columns: 10vw 90vw;
+    display: grid;
+    grid-template-columns: 10vw 90vw;
 }
 
 .prefectures_area {
-  max-height: 95vh;
-  overflow: scroll;
+    height: 95vh;
+    overflow: scroll;
 }
 
 .section_title {
-  font-weight: bold;
+    font-weight: bold;
 }
 
-.graph-area {
-  max-height: 95vh;
-  overflow: scroll;
+.graph_area {
+    height: 95vh;
+    overflow: scroll;
 }
 
 .title {
-  height: 5vh;
-  background-color: rgb(70, 70, 91);
-  color: white;
-  font-size: 1.8rem;
+    height: 5vh;
+    background-color: rgb(70, 70, 91);
+    color: white;
+    font-size: 1.8rem;
 }

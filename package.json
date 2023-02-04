@@ -10,6 +10,8 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "axios": "^0.27.2",
+    "highcharts": "^10.3.3",
+    "highcharts-react-official": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
@@ -21,6 +23,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "npm test -- --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "eslint": "eslint ./src/",
     "format": "prettier --write 'src/**/*.{ts,tsx}'",
@@ -50,5 +53,15 @@
     "msw": "^1.0.0",
     "prettier": "^2.8.3",
     "sass": "^1.58.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!<rootDir>/node_modules/",
+      "!src/react-app-env.d.ts",
+      "!src/reportWebVitals.ts",
+      "!src/index.tsx"
+    ],
+    "coverageReporters": ["text"]
   }
 }
