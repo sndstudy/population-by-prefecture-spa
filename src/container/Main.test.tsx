@@ -187,4 +187,36 @@ describe('Mainのテスト', () => {
     // グラフが描画されていることを確認
     expect(asFragment()).toMatchSnapshot();
   });
+
+  it('都道府県を選択して、解除する', async () => {
+    const { asFragment } = render(
+      <QueryClientProvider client={queryClient}>
+        <Main />
+      </QueryClientProvider>,
+    );
+
+    const checkbox = screen.getByLabelText('北海道');
+
+    userEvent.click(checkbox);
+    expect(checkbox).toBeChecked();
+
+    await waitFor(() => {
+      // チェックボックスとグラフの選択したラベルに都道府県名が描画されているか確認
+      expect(screen.getAllByText('北海道').length).toEqual(2);
+    });
+
+    // グラフが描画されていることを確認
+    expect(asFragment()).toMatchSnapshot();
+
+    userEvent.click(checkbox);
+    expect(checkbox).not.toBeChecked();
+
+    await waitFor(() => {
+      // チェックボックスのラベル
+      expect(screen.getAllByText('北海道').length).toEqual(1);
+    });
+
+    // グラフが描画されていないことを確認
+    expect(asFragment()).toMatchSnapshot();
+  });
 });

@@ -44,18 +44,20 @@ const Main = () => {
   };
 
   useEffect(() => {
-    if (fetchPopulationDataResult.data) {
-      const b = fetchPrefecturesResult.data?.result.find(
+    if (fetchPopulationDataResult.data && fetchPrefecturesResult.data) {
+      const prefecturesData = fetchPrefecturesResult.data.result.find(
         (v) => String(v.prefCode) === fetchPopulationParam,
       );
-      setPopulationDataList((prev) => [
-        ...prev,
-        {
-          ...fetchPopulationDataResult.data.result,
-          prefCode: b?.prefCode || '',
-          prefName: b?.prefName || '',
-        },
-      ]);
+      if (prefecturesData) {
+        setPopulationDataList((prev) => [
+          ...prev,
+          {
+            ...fetchPopulationDataResult.data.result,
+            prefCode: prefecturesData.prefCode,
+            prefName: prefecturesData.prefName,
+          },
+        ]);
+      }
     }
   }, [
     fetchPopulationDataResult.data,
