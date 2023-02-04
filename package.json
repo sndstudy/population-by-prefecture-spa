@@ -23,6 +23,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "npm test -- --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "eslint": "eslint ./src/",
     "format": "prettier --write 'src/**/*.{ts,tsx}'",
@@ -52,5 +53,15 @@
     "msw": "^1.0.0",
     "prettier": "^2.8.3",
     "sass": "^1.58.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!<rootDir>/node_modules/",
+      "!src/react-app-env.d.ts",
+      "!src/reportWebVitals.ts",
+      "!src/index.tsx"
+    ],
+    "coverageReporters": ["text"]
   }
 }
