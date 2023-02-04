@@ -37,9 +37,16 @@ export type Population = {
 };
 
 export const fetchPrefectures = async () => {
-  const { data } = await instance.get<PrefecturesResponse>(
-    'api/v1/prefectures',
-  );
+  const { data } = await instance.get<
+    PrefecturesResponse | { statusCode: string }
+  >('api/v1/prefectures');
+
+  // エラーの場合、ステータスコードがレスポンスボディに設定されているため「statusCode」の有無でエラーを判定する
+  // https://opendata.resas-portal.go.jp/docs/api/v1/detail/index.html
+  if ('statusCode' in data) {
+    throw new Error();
+  }
+
   return data;
 };
 
@@ -50,13 +57,19 @@ export const fetchPopulationData = async ({
 }) => {
   const [, prefCode] = queryKey;
 
-  const { data } = await instance.get<PopulationResponse>(
-    'api/v1/population/composition/perYear',
-    {
-      params: {
-        prefCode,
-      },
+  const { data } = await instance.get<
+    PopulationResponse | { statusCode: string }
+  >('api/v1/population/composition/perYear', {
+    params: {
+      prefCode,
     },
-  );
+  });
+
+  // エラーの場合、ステータスコードがレスポンスボディに設定されているため「statusCode」の有無でエラーを判定する
+  // https://opendata.resas-portal.go.jp/docs/api/v1/detail/index.html
+  if ('statusCode' in data) {
+    throw new Error();
+  }
+
   return data;
 };
