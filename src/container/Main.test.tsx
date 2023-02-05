@@ -2,7 +2,11 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import Main from './Main';
-import { PrefecturesResponse } from '../api/fetch-data';
+import {
+  API_PATH,
+  PrefecturesResponse,
+  RESAS_API_ENDPOINT,
+} from '../api/fetch-data';
 import { QueryClient, QueryClientProvider, setLogger } from 'react-query';
 import userEvent from '@testing-library/user-event';
 
@@ -75,7 +79,7 @@ const populationData = [
   {
     prefCode: '3',
     data: {
-      message: null,
+      message: 'テストメッセージ',
       result: {
         boundaryYear: 2020,
         data: [
@@ -105,7 +109,7 @@ const populationData = [
 describe('Mainのテスト', () => {
   const server = setupServer(
     rest.get(
-      'https://opendata.resas-portal.go.jp/api/v1/prefectures',
+      `${RESAS_API_ENDPOINT}${API_PATH.PREFECTURES}`,
       (req, res, ctx) => {
         return res(
           ctx.json<PrefecturesResponse>({
@@ -119,14 +123,11 @@ describe('Mainのテスト', () => {
         );
       },
     ),
-    rest.get(
-      'https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear',
-      (req, res, ctx) => {
-        const prefCode = req.url.searchParams.get('prefCode');
-        const resData = populationData.find((v) => v.prefCode === prefCode);
-        return res(ctx.json(resData?.data));
-      },
-    ),
+    rest.get(`${RESAS_API_ENDPOINT}${API_PATH.POPULATION}`, (req, res, ctx) => {
+      const prefCode = req.url.searchParams.get('prefCode');
+      const resData = populationData.find((v) => v.prefCode === prefCode);
+      return res(ctx.json(resData?.data));
+    }),
   );
 
   beforeAll(() => {
@@ -233,7 +234,7 @@ describe('Mainのテスト', () => {
 describe('Mainのテスト(エラーパターン)', () => {
   const server = setupServer(
     rest.get(
-      'https://opendata.resas-portal.go.jp/api/v1/prefectures',
+      `${RESAS_API_ENDPOINT}${API_PATH.PREFECTURES}`,
       (req, res, ctx) => {
         return res(
           ctx.json<{ statusCode: string }>({
@@ -242,16 +243,13 @@ describe('Mainのテスト(エラーパターン)', () => {
         );
       },
     ),
-    rest.get(
-      'https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear',
-      (req, res, ctx) => {
-        return res(
-          ctx.json<{ statusCode: string }>({
-            statusCode: '403',
-          }),
-        );
-      },
-    ),
+    rest.get(`${RESAS_API_ENDPOINT}${API_PATH.POPULATION}`, (req, res, ctx) => {
+      return res(
+        ctx.json<{ statusCode: string }>({
+          statusCode: '403',
+        }),
+      );
+    }),
   );
 
   beforeAll(() => {
@@ -291,7 +289,7 @@ describe('Mainのテスト(エラーパターン)', () => {
   it('人口構成APIエラー', async () => {
     server.use(
       rest.get(
-        'https://opendata.resas-portal.go.jp/api/v1/prefectures',
+        `${RESAS_API_ENDPOINT}${API_PATH.PREFECTURES}`,
         (req, res, ctx) => {
           return res(
             ctx.json<PrefecturesResponse>({
