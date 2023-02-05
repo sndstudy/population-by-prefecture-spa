@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const RESAS_API_ENDPOINT = 'https://opendata.resas-portal.go.jp/';
+export const RESAS_API_ENDPOINT = 'https://opendata.resas-portal.go.jp';
+export const API_PATH = {
+  PREFECTURES: '/api/v1/prefectures',
+  POPULATION: '/api/v1/population/composition/perYear',
+};
 const API_KEY = process.env['REACT_APP_RESAS_API_KEY'] || '';
 
 const instance = axios.create({
@@ -39,7 +43,7 @@ export type Population = {
 export const fetchPrefectures = async () => {
   const { data } = await instance.get<
     PrefecturesResponse | { statusCode: string }
-  >('api/v1/prefectures');
+  >(API_PATH.PREFECTURES);
 
   // エラーの場合、ステータスコードがレスポンスボディに設定されているため「statusCode」の有無でエラーを判定する
   // https://opendata.resas-portal.go.jp/docs/api/v1/detail/index.html
@@ -59,7 +63,7 @@ export const fetchPopulationData = async ({
 
   const { data } = await instance.get<
     PopulationResponse | { statusCode: string }
-  >('api/v1/population/composition/perYear', {
+  >(API_PATH.POPULATION, {
     params: {
       prefCode,
     },

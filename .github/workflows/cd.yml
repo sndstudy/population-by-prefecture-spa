@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REACT_APP_RESAS_API_KEY: ${{ secrets.REACT_APP_RESAS_API_KEY }}
+      GENERATE_SOURCEMAP: false
     permissions:
       id-token: write
       contents: read
